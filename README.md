@@ -1,5 +1,9 @@
 # 项目介绍
 
+![Alt](https://repobeats.axiom.co/api/embed/1b81d2577f36a09f53a1f9216390ff64eeed8116.svg "Repobeats analytics image")
+
+
+
 ### 一、涉及的问题分析
 
 1、当面对带有时间序列的多组数据进行聚类问题时，
