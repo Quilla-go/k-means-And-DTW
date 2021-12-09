@@ -94,7 +94,8 @@ def DTWDistance_W(s1, s2, w):
     return math.sqrt(DTW[s1_len - 1, s2_len - 1])
 
 
-# Another way to speed things up is to use the LB Keogh lower bound of dynamic time warping
+# Another way to speed things up is to use the LB Keogh lower
+# bound of dynamic time warping
 def LB_Keogh(s1, s2, r):
     LB_sum = 0
     for ind, i in enumerate(s1):
@@ -173,4 +174,3 @@ if __name__ == '__main__':
     # get_wbcdata(filename)
     # get_Numbdata(filename)
     main(filename)
-

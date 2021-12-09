@@ -12,4 +12,4 @@ def DTWDistance(s1, s2):
 def DTWDistance_W(s1, s2, w):
 ```
 
-之后的计算就用优化后的``DTW`Distance_W()`函数。
+之后的计算就用优化后的`DTWDistance_W()`函数。

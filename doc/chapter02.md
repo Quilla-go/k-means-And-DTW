@@ -1,4 +1,8 @@
-#### 1.3  `DTW`的主流优化手段[^2]
+## k-means-And-DTW原理及算法介绍 Chapter02
+
+[toc]
+
+#### 2.3  `DTW`的主流优化手段[^2]
 
 `DTW`出现之前对于序列相似度测测量主要基于`ED（Euclidean Distance）`。
 
