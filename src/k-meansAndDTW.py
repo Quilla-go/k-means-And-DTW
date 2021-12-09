@@ -8,7 +8,7 @@ from pandas import read_csv as pdreadcsv
 from pandas import DataFrame as pddataframe
 
 
-# 展示一下如何使用plot绘图。
+# 展示一下如何使用plot绘图。这里是自己创造模拟数据。
 def get_draw():
     x = np.linspace(0, 50, 100)
     ts1 = pd.Series(3.1 * np.sin(x / 1.5) + 3.5)
@@ -21,6 +21,7 @@ def get_draw():
     plt.legend(['ts1', 'ts2', 'ts3'])
     plt.show()
 
+# 计算欧拉距离
     def euclid_dist(t1, t2):
         return math.sqrt(sum((t1 - t2)**2))
 
@@ -34,16 +35,20 @@ def get_wbcdata(filename):
     workdata = df[["num", "days", "wbc"]]
 
     workdata_len = len(workdata["num"])
+
     days = [0] * (workdata_len)
     WBC = [0] * (workdata_len)
     Numb = [0] * (workdata_len)
+
     for i in range(workdata_len):
         Numb[i] = workdata["num"][i]
         days[i] = workdata["days"][i]
         WBC[i] = workdata["wbc"][i]
     s = int(len(WBC) / 30)
+
     WBCData = np.mat(WBC).reshape(s, 30)
     WBCData = np.array(WBCData)
+
     return WBCData, Numb, days, WBC
     # print(WBCData)
 
@@ -63,29 +68,39 @@ def DTWDistance(s1, s2):
     DTW = {}
     s1_len = len(s1)
     s2_len = len(s2)
+
+# 先把路径矩阵设置为原始值，null。
     for i in range(s1_len):
         DTW[(i, -1)] = float('inf')
+
     for i in range(s2_len):
         DTW[(-1, i)] = float('inf')
+
     DTW[(-1, -1)] = 0
+
+# 计算
     for i in range(s1_len):
         for j in range(s2_len):
-            dist = (s1[i] - s2[j])**2
+            dist = (s1[i] - s2[j]) ** 2
             DTW[(i, j)] = dist + min(DTW[(i - 1, j)], DTW[(i, j - 1)],
                                      DTW[(i - 1, j - 1)])
+
     return math.sqrt(DTW[len(s1) - 1, len(s2) - 1])
 
 
-# DTW_W距离, 优化后的算法，只检测前W个窗口的值
+# DTW_W距离, 优化后的算法，只检测前W个窗口的值。
 def DTWDistance_W(s1, s2, w):
     DTW = {}
     s1_len = len(s1)
     s2_len = len(s2)
     w = max(w, abs(s1_len - s2_len))
+
+# 另一种初始化路径矩阵的循环方法。
     for i in range(-1, s1_len):
         for j in range(-1, s2_len):
             DTW[(i, j)] = float('inf')
     DTW[(-1, -1)] = 0
+
     for i in range(s1_len):
         for j in range(max(0, i - w), min(s2_len, i + w)):
             dist = (s1[i] - s2[j])**2
@@ -119,10 +134,12 @@ def k_means_clust(data, num_clust, num_iter, w=5):
         counter += 1
 
         assignments = {}  # 存储类别0，1，2等类号和所包含的类的号码
+
         # 遍历每一个样本点 i ,因为本题与之前有所不同，多了ind的编码
         for ind, i in enumerate(data):
             min_dist = float('inf')  # 最近距离，初始定一个较大的值
             closest_clust = None  # closest_clust：最近的均值点编号
+
             # 步骤二: 寻找最近的均值点
             for c_ind, j in enumerate(centroids):  # 每个点和中心点的距离，共有num_clust个值
                 if LB_Keogh(i, j, 3) < min_dist:  # 循环去找最小的那个
@@ -130,6 +147,7 @@ def k_means_clust(data, num_clust, num_iter, w=5):
                     if cur_dist < min_dist:  # 找到了ind点距离c_ind最近
                         min_dist = cur_dist
                         closest_clust = c_ind
+
             # 步骤三: 更新 ind 所属簇
             # print(closest_clust)
             if closest_clust in assignments:
@@ -137,6 +155,7 @@ def k_means_clust(data, num_clust, num_iter, w=5):
             else:
                 assignments[closest_clust] = []
                 assignments[closest_clust].append(ind)
+
         # 步骤四: 更新簇的均值点
         for key in assignments:
             clust_sum = 0

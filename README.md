@@ -40,4 +40,4 @@
 
 算法原理见`doc/chapter01.md`和`doc/chapter02.md`，具体示例的实现说明见`doc/chapter03.md`。
 
-<END>
+\<END>
