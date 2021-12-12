@@ -3,12 +3,11 @@ import numpy as np
 import matplotlib.pylab as plt
 import math
 import random
-import numpy as np
 from pandas import read_csv as pdreadcsv
-from pandas import DataFrame as pddataframe
 
 
 # 展示一下如何使用plot绘图。这里是自己创造模拟数据。
+# 构建3个不同振幅和波长的数据（其中一个是直线）。
 def get_draw():
     x = np.linspace(0, 50, 100)
     ts1 = pd.Series(3.1 * np.sin(x / 1.5) + 3.5)
@@ -25,11 +24,12 @@ def get_draw():
     def euclid_dist(t1, t2):
         return math.sqrt(sum((t1 - t2)**2))
 
-    print(euclid_dist(ts1, ts2))  # 26.959216038
-    print(euclid_dist(ts1, ts3))  # 23.1892491903
+    print("ts1和ts2的欧拉距离：%f" % euclid_dist(ts1, ts2))  # 26.959216
+    print("ts1和ts3的欧拉距离：%f" % euclid_dist(ts1, ts3))  # 23.189249
+    print("ts2和ts3的欧拉距离：%f" % euclid_dist(ts2, ts3))  # 17.298735
 
 
-# 1   数据提取
+# 1、数据提取
 def get_wbcdata(filename):
     df = pdreadcsv(filename)
     workdata = df[["num", "days", "wbc"]]
@@ -53,6 +53,7 @@ def get_wbcdata(filename):
     # print(WBCData)
 
 
+# 2、绘制白细胞计数结果的时序图
 def draw_wbcdata(filename):
     WBCData, _, _, _ = get_wbcdata(filename)
 
@@ -62,12 +63,13 @@ def draw_wbcdata(filename):
     plt.show()
 
 
-# 2  定义相似距离
+# 3、定义相似距离
 # DTW距离，时间复杂度为两个时间序列长度相乘
 def DTWDistance(s1, s2):
     DTW = {}
     s1_len = len(s1)
     s2_len = len(s2)
+
 
 # 先把路径矩阵设置为原始值，null。
     for i in range(s1_len):
@@ -78,7 +80,8 @@ def DTWDistance(s1, s2):
 
     DTW[(-1, -1)] = 0
 
-# 计算
+
+# 计算DTW距离
     for i in range(s1_len):
         for j in range(s2_len):
             dist = (s1[i] - s2[j]) ** 2
@@ -95,7 +98,7 @@ def DTWDistance_W(s1, s2, w):
     s2_len = len(s2)
     w = max(w, abs(s1_len - s2_len))
 
-# 另一种初始化路径矩阵的循环方法。
+# 和DTW函数里不同，另一种初始化路径矩阵的循环方法。
     for i in range(-1, s1_len):
         for j in range(-1, s2_len):
             DTW[(i, j)] = float('inf')
@@ -103,7 +106,7 @@ def DTWDistance_W(s1, s2, w):
 
     for i in range(s1_len):
         for j in range(max(0, i - w), min(s2_len, i + w)):
-            dist = (s1[i] - s2[j])**2
+            dist = (s1[i] - s2[j]) ** 2
             DTW[(i, j)] = dist + min(DTW[(i - 1, j)], DTW[(i, j - 1)],
                                      DTW[(i - 1, j - 1)])
     return math.sqrt(DTW[s1_len - 1, s2_len - 1])
@@ -188,7 +191,7 @@ def main(filename):
 
 if __name__ == '__main__':
     # get_draw()
-    filename = r"./20200315.csv"
+    filename = r"../data/20200315.csv"
     # draw_wbcdata(filename)
     # get_wbcdata(filename)
     # get_Numbdata(filename)

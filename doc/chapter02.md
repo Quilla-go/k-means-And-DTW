@@ -95,7 +95,7 @@ DTW 的适用范围极其广泛，语音识别，搜索引擎，基因组数据�
 
 主要思想是在搜索数据很大的时候， 逐个用`DTW`算法比较每一条是否匹配非常耗时。
 
-那我们能不能使用一种计算较快的近似方法计算`lower bounding distance，LB` 下界距离， 通过`LB`处理掉大部分不可能是最优匹配序列的序列，对于剩下的序列在使用`DTW`逐个比较呢？也就是经过剪枝，减少运算量。
+那可以使用一种计算较快的近似方法计算`lower bounding distance，LB` ，即**下界距离**， 通过`LB`处理掉大部分超出下界距离之外的、不可能是最优匹配序列的序列，对于剩下的序列再使用`DTW`逐个比较。也就是经过剪枝，减少运算量。
 
 伪代码如下：
 
@@ -107,6 +107,7 @@ for all sequences in database
     LB_dist = lower_bound_distance(Ci,Q); 
         if LB_dist < best_so_far
             true_dist = DTW(Ci,Q);
+            
             if true_dist < best_so_far
                 best_so_far = true_dist;
                 index_of_best_match= i;
@@ -115,7 +116,7 @@ for all sequences in database
 endfor
 ```
 
-
+重点是第5行计算 `LB_dist` 。
 
 对于`Lower Bounding`具体的计算方法这些年学界有很多积累。 
 
