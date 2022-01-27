@@ -117,8 +117,9 @@ def DTWDistance_W(s1, s2, w):
 def LB_Keogh(s1, s2, r):
     LB_sum = 0
     for ind, i in enumerate(s1):
-        # print(s2)
+        # 找出下界
         lower_bound = min(s2[(ind - r if ind - r >= 0 else 0):(ind + r)])
+        # 找出上界
         upper_bound = max(s2[(ind - r if ind - r >= 0 else 0):(ind + r)])
         if i >= upper_bound:
             LB_sum = LB_sum + (i - upper_bound)**2
