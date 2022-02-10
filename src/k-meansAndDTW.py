@@ -1,9 +1,11 @@
 import pandas as pd
 import numpy as np
-import matplotlib.pylab as plt
 import math
 import random
 from pandas import read_csv as pdreadcsv
+import matplotlib.pylab as plt
+plt.rcParams['font.sans-serif'] = ['SimHei']  # 防止中文显示不出来
+plt.rcParams['axes.unicode_minus'] = False  # 防止坐标轴符号显示不出来
 
 
 # 展示一下如何使用plot绘图。这里是自己创造模拟数据。
@@ -112,8 +114,7 @@ def DTWDistance_W(s1, s2, w):
     return math.sqrt(DTW[s1_len - 1, s2_len - 1])
 
 
-# Another way to speed things up is to use the LB Keogh lower
-# bound of dynamic time warping
+# 使用 LB Keogh lower 加速距离运算的方法
 def LB_Keogh(s1, s2, r):
     LB_sum = 0
     for ind, i in enumerate(s1):
@@ -170,8 +171,8 @@ def k_means_clust(data, num_clust, num_iter, w=5):
     return centroids, assignments
 
 
-def main(filename):
-    num_clust = 2  # 定义需要分类的数量
+def main(filename, num_clust):
+    # num_clust 定义需要分类的数量
     WBCData, Numb, days, WBC = get_wbcdata(filename)
 
     centroids, assignments = k_means_clust(WBCData, num_clust, 800, 3)
@@ -184,9 +185,11 @@ def main(filename):
             s.append(int(Numb[indj * 30]))
             WBC01 = np.hstack((WBC01, WBC[30 * indj:30 * indj + 30]))
             days01 = np.hstack((days01, days[0:30]))
-        plt.title('%s' % s)
+        plt.title('30天红细胞聚为%d类聚类结果' % num_clust)
         plt.plot(centroids[i], lw=4)
         plt.scatter(days01, WBC01)
+        plt.xlabel("天数")
+        plt.ylabel("红细胞计数")
     plt.show()
 
 
@@ -196,4 +199,4 @@ if __name__ == '__main__':
     # draw_wbcdata(filename)
     # get_wbcdata(filename)
     # get_Numbdata(filename)
-    main(filename)
+    main(filename, num_clust=3)
