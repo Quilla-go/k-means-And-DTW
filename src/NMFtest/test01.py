@@ -1,14 +1,14 @@
 from sklearn.decomposition import NMF
 import numpy as np
 import matplotlib.pyplot as plt
-import warnings
+# import warnings
 # warnings.filterwarnings("ignore")
 plt.rcParams['font.sans-serif'] = ['SimHei']  # 防止中文显示不出来
 plt.rcParams['axes.unicode_minus'] = False  # 防止坐标轴符号显示不出来
 
 
 def get_datas(n_components):
-    # 5部电影
+    # 10部电影
     item = [
         '希特勒回来了', '死侍', '房间', '龙虾', '大空头',
         '极盗者', '裁缝', '八恶人', '实习生', '间谍之桥',
@@ -19,7 +19,7 @@ def get_datas(n_components):
             '橙子c', '秋月白', 'clavin_kong', 'olit', 'You_某人',
             '凛冬将至', 'Rusty', '噢！你看！', 'Aron', 'ErDong Chen']
 
-    # 15×5的特征矩阵
+    # 10×15的特征矩阵
     RATE_MATRIX = np.array(
         [[5, 5, 3, 0, 5, 5, 4, 3, 2, 1, 4, 1, 3, 4, 5],
          [5, 0, 4, 0, 4, 4, 3, 2, 1, 2, 4, 4, 3, 4, 0],
@@ -99,6 +99,6 @@ def recomd_item(RATE_MATRIX, item_dis, user_dis, rec_user):
 
 if __name__ == '__main__':
     item, user, user_dis, item_dis, RATE_MATRIX = get_datas(n_components=4)
-    # get_item_dis(item, item_dis)
+    get_item_dis(item, item_dis)
     # get_user_dis(user, user_dis)
     recomd_item(RATE_MATRIX, item_dis, user_dis, rec_user='凛冬将至')
