@@ -133,7 +133,7 @@ The examples are designed for you to copy-paste into your own project and apply 
 
 当你确定你需要安装最新版本时不要跳过这步。
 
-你可以适用 pip 安装驱动来安装 scikit-learn 库。
+你可以适用 pip 安装驱动来安装 `scikit-learn` 库。
 
 ```
 sudo pip install scikit-learn
